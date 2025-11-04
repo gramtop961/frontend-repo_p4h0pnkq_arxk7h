@@ -1,28 +1,44 @@
-import { useState } from 'react'
+import React from 'react';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import Projects from './components/Projects';
+import About from './components/About';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [page, setPage] = React.useState('home');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
+    <div className="min-h-screen bg-white text-slate-900">
+      <Navbar current={page} onNavigate={setPage} />
 
-export default App
+      {page === 'home' && (
+        <>
+          <Hero onSeeProjects={() => setPage('projects')} onAbout={() => setPage('about')} />
+          <div className="max-w-6xl mx-auto px-4 md:px-6 pb-12 md:pb-16">
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 md:p-8">
+              <h3 className="text-xl font-semibold mb-2">Design approach</h3>
+              <p className="text-slate-600 max-w-3xl">
+                I believe in clarity, hierarchy, and gentle motion. Every artifact should be purposeful and every
+                interaction should reduce cognitive load.
+              </p>
+            </div>
+          </div>
+        </>
+      )}
+
+      {page === 'projects' && <Projects />}
+      {page === 'about' && <About />}
+
+      <footer className="py-8 border-t border-slate-100">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 text-sm text-slate-500 flex flex-col md:flex-row items-center justify-between gap-3">
+          <span>© {new Date().getFullYear()} Ayan — UI/UX Designer</span>
+          <div className="flex items-center gap-3">
+            <a className="hover:text-slate-700" href="#" onClick={() => setPage('projects')}>Projects</a>
+            <span className="text-slate-300">•</span>
+            <a className="hover:text-slate-700" href="#" onClick={() => setPage('about')}>About</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
